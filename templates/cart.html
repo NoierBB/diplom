@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="cart-section">
+    <h1>Ваша корзина</h1>
+    
+    {% if cart %}
+    <div class="cart-container">
+        <div class="cart-items">
+            {% for item in cart.values() %}
+            <div class="cart-item">
+                <div class="item-image">
+                    <img src="{{ url_for('static', filename='uploads/' + item.image) if item.image else url_for('static', filename='images/no-image.png') }}" 
+                         alt="{{ item.name }}">
+                </div>
+                <div class="item-details">
+                    <h3>{{ item.name }}</h3>
+                    <div class="item-price">{{ item.price }} ₽</div>
+                    <div class="item-category">{{ item.category }}</div>
+                </div>
+                <div class="item-quantity">
+                    <form action="{{ url_for('update_cart', product_id=item.id) }}" method="POST">
+                        <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
+                        <span class="quantity">{{ item.quantity }}</span>
+                        <button type="submit" name="action" value="increase" class="quantity-btn">+</button>
+                    </form>
+                </div>
+                <div class="item-total">{{ item.price * item.quantity }} ₽</div>
+                <div class="item-remove">
+                    <form action="{{ url_for('update_cart', product_id=item.id) }}" method="POST">
+                        <button type="submit" name="action" value="remove" class="remove-btn">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cart-summary">
+            <h3>Итого</h3>
+            <div class="summary-row">
+                <span>Товары ({{ cart|length }})</span>
+                <span>{{ total }} ₽</span>
+            </div>
+            <div class="summary-row">
+                <span>Доставка</span>
+                <span>Бесплатно</span>
+            </div>
+            <div class="summary-row total">
+                <span>Общая сумма</span>
+                <span>{{ total }} ₽</span>
+            </div>
+            <a href="{{ url_for('checkout') }}" class="btn checkout-btn">Оформить заказ</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        
+        <!-- <img src="{{ url_for('static', filename='images/empty-cart.png') }}" alt="Пустая корзина"> -->
+        <h2>Ваша корзина пуста</h2>
+        <p>Добавьте товары из каталога</p>
+        <a href="{{ url_for('products') }}" class="btn">Перейти в каталог</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

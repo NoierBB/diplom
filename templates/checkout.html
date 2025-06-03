@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<section class="checkout-section">
+    <h1>Оформление заказа</h1>
+    
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2>Контактные данные</h2>
+            <form method="POST" action="{{ url_for('checkout') }}">
+                <div class="form-group">
+                    <label for="name">ФИО*</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email*</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон*</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Адрес доставки*</label>
+                    <textarea id="address" name="address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий к заказу</label>
+                    <textarea id="comment" name="comment"></textarea>
+                </div>
+                <button type="submit" class="btn">Подтвердить заказ</button>
+            </form>
+        </div>
+        
+        <div class="order-summary">
+            <h2>Ваш заказ</h2>
+            <div class="order-items">
+                {% for item in cart.values() %}
+                <div class="order-item">
+                    <div class="item-name">{{ item.name }} × {{ item.quantity }}</div>
+                    <div class="item-price">{{ item.price * item.quantity }} ₽</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="order-total">
+                <span>Итого:</span>
+                <span>{{ total }} ₽</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

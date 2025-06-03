@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
 import os
+from flask import session as flask_session
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
@@ -130,6 +132,10 @@ def init_db():
 def index():
     return render_template('index.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/catalog')
 def catalog():
     return redirect(url_for('products'))
@@ -153,6 +159,7 @@ def products():
                          products=products_list,
                          categories=categories,
                          current_category=category)
+
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -199,6 +206,91 @@ def admin_dashboard():
 def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('index'))
+
+# Товары в корзине будут храниться в сессии
+@app.route('/add-to-cart/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+    
+    product = Product.query.get_or_404(product_id)
+    
+    # Инициализируем корзину в сессии, если её нет
+    if 'cart' not in session:
+        session['cart'] = {}
+    
+    cart = session['cart']
+    
+    # Добавляем товар в корзину
+    if str(product_id) in cart:
+        cart[str(product_id)]['quantity'] += 1
+    else:
+        cart[str(product_id)] = {
+            'id': product.id,
+            'name': product.name,
+            'price': float(product.price),
+            'quantity': 1,
+            'image': product.image,
+            'category': product.category
+        }
+    
+    # Сохраняем обновленную корзину в сессии
+    session['cart'] = cart
+    
+    # Возвращаем JSON-ответ для AJAX
+    return {
+        'success': True,
+        'cart_total': sum(item['quantity'] for item in cart.values())
+    }
+
+@app.route('/cart')
+def view_cart():
+    cart = flask_session.get('cart', {})
+    total = sum(item['price'] * item['quantity'] for item in cart.values())
+    return render_template('cart.html', cart=cart, total=total)
+
+@app.route('/update-cart/<int:product_id>', methods=['POST'])
+def update_cart(product_id):
+    action = request.form.get('action')
+    cart = flask_session.get('cart', {})
+    
+    if str(product_id) in cart:
+        if action == 'increase':
+            cart[str(product_id)]['quantity'] += 1
+        elif action == 'decrease':
+            if cart[str(product_id)]['quantity'] > 1:
+                cart[str(product_id)]['quantity'] -= 1
+            else:
+                del cart[str(product_id)]
+        elif action == 'remove':
+            del cart[str(product_id)]
+    
+    flask_session['cart'] = cart
+    return redirect(url_for('view_cart'))
+
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    if request.method == 'POST':
+        # Здесь будет обработка оформления заказа
+        name = request.form['name']
+        email = request.form['email']
+        address = request.form['address']
+        
+        # Создаем заказ в БД (нужно добавить модель Order)
+        # order = Order(name=name, email=email, address=address, ...)
+        # db.session.add(order)
+        # db.session.commit()
+        
+        # Очищаем корзину
+        flask_session.pop('cart', None)
+        
+        return render_template('order_success.html')
+    
+    cart = flask_session.get('cart', {})
+    if not cart:
+        return redirect(url_for('view_cart'))
+    
+    total = sum(item['price'] * item['quantity'] for item in cart.values())
+    return render_template('checkout.html', cart=cart, total=total)
 
 @app.errorhandler(404)
 def page_not_found(e):

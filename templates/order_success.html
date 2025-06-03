@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+<section class="order-success">
+    <div class="success-icon">✓</div>
+    <h1>Спасибо за ваш заказ!</h1>
+    <p>Номер вашего заказа: #12345</p>
+    <p>Мы свяжемся с вами в ближайшее время для подтверждения.</p>
+    <div class="success-actions">
+        <a href="{{ url_for('products') }}" class="btn">Продолжить покупки</a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">На главную</a>
+    </div>
+</section>
+{% endblock %}
