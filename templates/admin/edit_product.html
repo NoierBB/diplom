@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать товар{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h1>Редактировать товар</h1>
+    
+    <form method="POST" enctype="multipart/form-data" class="product-form">
+        <div class="form-group">
+            <label for="name">Название товара:</label>
+            <input type="text" id="name" name="name" value="{{ product.name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Цена:</label>
+            <input type="number" id="price" name="price" step="0.01" value="{{ product.price }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" rows="4">{{ product.description }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Категория:</label>
+            <input type="text" id="category" name="category" value="{{ product.category }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Изображение:</label>
+            <input type="file" id="image" name="image">
+            <small>Текущее изображение: {{ product.image }}</small>
+        </div>
+        
+        <button type="submit" class="btn">Сохранить изменения</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Network - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Боковое меню -->
+        <aside class="neon-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar">{{ user.username[0]|upper }}</div>
+                <div class="profile-name">{{ user.username }}</div>
+                <div class="profile-email">{{ user.email }}</div>
+            </div>
+            
+            <nav class="neon-nav">
+                <a href="{{ url_for('dashboard') }}" class="neon-nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Главная</span>
+                </a>
+                <a href="{{ url_for('news') }}" class="neon-nav-link">
+                    <span class="nav-icon">📰</span>
+                    <span class="nav-text">Новости</span>
+                </a>
+                <a href="{{ url_for('messages') }}" class="neon-nav-link">
+                    <span class="nav-icon">✉️</span>
+                    <span class="nav-text">Сообщения</span>
+                    <span class="nav-badge">3</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="neon-nav-link">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Выйти</span>
+                </a>
+            </nav>
+            
+            <div class="neon-status">
+                <div class="status-light"></div>
+                <div class="status-text">Online</div>
+            </div>
+        </aside>
+        
+        <!-- Основное содержимое -->
+        <main class="neon-main">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

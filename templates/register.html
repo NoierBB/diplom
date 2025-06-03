@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="neon-container">
+    <div class="neon-sign">Регистрация</div>
+    
+    <form method="POST" class="neon-form">
+        <div class="input-group">
+            <input type="text" name="username" required class="neon-input">
+            <span class="neon-label">Имя пользователя</span>
+            <span class="neon-border"></span>
+        </div>
+        
+        <div class="input-group">
+            <input type="email" name="email" required class="neon-input">
+            <span class="neon-label">Email</span>
+            <span class="neon-border"></span>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" name="password" required class="neon-input">
+            <span class="neon-label">Пароль</span>
+            <span class="neon-border"></span>
+        </div>
+        
+        <button type="submit" class="neon-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Зарегистрироваться
+        </button>
+    </form>
+    
+    <div class="neon-link">
+        Уже есть аккаунт? <a href="{{ url_for('login') }}" class="neon-link-btn">Войти</a>
+    </div>
+</div>
+{% endblock %}

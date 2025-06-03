@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Страница не найдена{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-content">
+        <h1>404</h1>
+        <h2>Ой-ой! Похоже, мы потеряли эту страницу...</h2>
+        
+        <div class="meme-container">
+            <img src="https://i.redd.it/i6h81kw9ogq61.jpg" alt="Dog programmer" class="meme-img">
+<div class="meme-text">Когда не можешь найти баг, но делаешь вид, что всё под контролем</div>
+            
+        </div>
+        
+        <p>Возможно, страница была перемещена или вы ввели неверный адрес.</p>
+        <a href="/" class="btn">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

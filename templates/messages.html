@@ -1,0 +1,41 @@
+{% extends "base_auth.html" %}
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+<div class="neon-header">
+    <h1>Сообщения</h1>
+    <p>Ваши личные переписки</p>
+</div>
+
+<div class="messages-container">
+    <div class="messages-search">
+        <input type="text" placeholder="Поиск сообщений..." class="neon-input">
+    </div>
+    
+    <div class="messages-list">
+        {% for msg in messages %}
+        <div class="message {% if msg.unread %}unread{% endif %}">
+            <div class="message-avatar">{{ msg.sender[0]|upper }}</div>
+            <div class="message-content">
+                <div class="message-header">
+                    <div class="message-sender">{{ msg.sender }}</div>
+                    <div class="message-time">{{ msg.time }}</div>
+                </div>
+                <div class="message-text">{{ msg.content }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="message-compose">
+        <textarea placeholder="Напишите сообщение..." class="neon-input"></textarea>
+        <button class="neon-btn neon-btn-small">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Отправить
+        </button>
+    </div>
+</div>
+{% endblock %}

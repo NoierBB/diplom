@@ -1,0 +1,26 @@
+{% extends "base_auth.html" %}
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div class="neon-header">
+    <h1>Новости</h1>
+    <p>Будьте в курсе последних событий</p>
+</div>
+
+<div class="news-container">
+    {% for item in news %}
+    <div class="news-item">
+        <div class="news-date">{{ item.date }}</div>
+        <h2 class="news-title">{{ item.title }}</h2>
+        <div class="news-content">{{ item.content }}</div>
+        <button class="neon-btn neon-btn-small">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Подробнее
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="neon-container">
+    <div class="neon-sign">Вход</div>
+    
+    <form method="POST" class="neon-form">
+        <div class="input-group">
+            <input type="email" name="email" required class="neon-input">
+            <span class="neon-label">Email</span>
+            <span class="neon-border"></span>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" name="password" required class="neon-input">
+            <span class="neon-label">Пароль</span>
+            <span class="neon-border"></span>
+        </div>
+        
+        <button type="submit" class="neon-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Войти
+        </button>
+    </form>
+    
+    <div class="neon-link">
+        Нет аккаунта? <a href="{{ url_for('register') }}" class="neon-link-btn">Зарегистрироваться</a>
+    </div>
+</div>
+{% endblock %}
