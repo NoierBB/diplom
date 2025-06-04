@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h1 class="hero__title">Добро пожаловать в OBI торг</h1>
+        <p class="hero__subtitle">Лучшие товары по выгодным ценам</p>
+        <a href="/products" class="btn">Посмотреть товары</a>
+    </section>
+
+    <section class="features">
+        <div class="features__item">
+            <h3>Быстрая доставка</h3>
+            <p>Доставка в течение 24 часов</p>
+        </div>
+        <div class="features__item">
+            <h3>Гарантия качества</h3>
+            <p>Все товары сертифицированы</p>
+        </div>
+        <div class="features__item">
+            <h3>Поддержка 24/7</h3>
+            <p>Всегда на связи</p>
+        </div>
+    </section>
+{% endblock %}
